@@ -1,0 +1,12 @@
+---
+- name: Test playbook for Windows machines
+  hosts: windows
+  tasks:
+    - name: Check disk space on C drive
+      win_disk_facts:
+        drive_letter: C
+
+    - name: Display disk information
+      debug:
+        var: disk_info
+
