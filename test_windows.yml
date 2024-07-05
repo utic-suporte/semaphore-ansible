@@ -1,12 +1,8 @@
 ---
-- name: Test playbook for Windows machines
-  hosts: windows
+- name: win_ping module demo
+  hosts: all
+  become: false
+  gather_facts: false
   tasks:
-    - name: Check disk space on C drive
-      win_disk_facts:
-        drive_letter: C
-
-    - name: Display disk information
-      debug:
-        var: disk_info
-
+    - name: test connection
+      ansible.windows.win_ping:
