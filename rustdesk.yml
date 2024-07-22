@@ -1,0 +1,19 @@
+---
+- name: Alterar a senha do RustDesk em máquinas Windows
+  hosts: Win-rustdesk
+  tasks:
+    - name: Criar um backup do arquivo de configuração do RustDesk
+      win_copy:
+        src: C:\ProgramData\RustDesk\config.json
+        dest: C:\ProgramData\RustDesk\config_backup.json
+
+    - name: Alterar a senha do RustDesk no arquivo de configuração
+      win_lineinfile:
+        path: C:\ProgramData\RustDesk\config.json
+        regexp: '"password": ".*"'
+        line: '"password": "nova_senha"'
+
+    - name: Reiniciar o serviço RustDesk
+      win_service:
+        name: RustDesk
+        state: restarted
