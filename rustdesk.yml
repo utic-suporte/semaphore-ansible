@@ -1,6 +1,6 @@
 ---
 - name: Alterar a senha do RustDesk em máquinas Windows
-  hosts: Win-rustdesk
+  hosts: windows
   tasks:
     - name: Criar um backup do arquivo de configuração do RustDesk
       win_copy:
