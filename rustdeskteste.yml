@@ -20,7 +20,7 @@
       win_service:
         name: Rustdesk
         state: restarted
-
+        
     - name: Configurar a senha do RustDesk
       win_shell: |
         $password = '{{ rustdesk_password }}'
