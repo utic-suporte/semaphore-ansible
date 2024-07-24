@@ -21,10 +21,10 @@
         name: Rustdesk
         state: restarted
         
-    - name: Configurar a senha do RustDesk
-      win_shell: |
-        $password = '{{ rustdesk_password }}'
-        # Comando para configurar a senha
-        Start-Process -FilePath "C:\Program Files\RustDesk\RustDesk.exe" -ArgumentList "--password {{ rustdesk_password }}" -Wait
-      args:
-        executable: powershell.exe
+- name: Configurar a senha do RustDesk
+  ansible.windows.win_shell:
+    cmd: |
+      $password = 'Sebrae@'
+      # Comando para configurar a senha
+      Start-Process -FilePath "C:\Program Files\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
+
