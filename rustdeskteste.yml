@@ -1,0 +1,26 @@
+---
+- name: Configurar RustDesk com senha fornecida
+  hosts: windows
+  vars:
+    rustdesk_password: 'Sebrae@2024'  # Insira a senha em texto claro aqui
+
+  tasks:
+    - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
+      win_copy:
+        src: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2.toml
+        dest: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2_backup.toml
+
+    - name: Criar novo arquivo de configuração do RustDesk para o usuário atual
+      win_template:
+        src: rustdesk_config.j2
+        dest: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2.toml
+
+    - name: Reiniciar o serviço RustDesk
+      win_service:
+        name: Rustdesk
+        state: restarted
+
+    - name: Configurar a senha do RustDesk
+      win_shell: |
+        $password = '{{ rustdesk_password }}'
+        Start-Process "$env:ProgramFiles\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
