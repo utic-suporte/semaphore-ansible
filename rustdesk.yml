@@ -6,12 +6,23 @@
       win_get_url:
         url: "https://github.com/rustdesk/rustdesk/releases/download/1.2.3/rustdesk-1.2.3-x86_64.exe"
         dest: "C:\\Temp\\rustdesk.exe"
+      register: download_result
+
+    - name: Verificar resultado do download
+      debug:
+        var: download_result
 
     - name: Instalar o RustDesk
       win_package:
         path: "C:\\Temp\\rustdesk.exe"
         arguments: "/silent"
         state: present
+      register: install_result
+      timeout: 600  # Timeout de 10 minutos
+
+    - name: Verificar resultado da instalação
+      debug:
+        var: install_result
 
     - name: Parar o serviço RustDesk
       win_service:
