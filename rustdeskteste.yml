@@ -2,7 +2,7 @@
 - name: Configurar RustDesk com senha fornecida
   hosts: windows
   vars:
-    rustdesk_password: 'Sebrae@2024'  # Insira a senha em texto claro aqui
+    rustdesk_password: '{{ vault_rustdesk_password }}'  # Usando uma variável do Vault ou um placeholder
 
   tasks:
     - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
@@ -24,4 +24,7 @@
     - name: Configurar a senha do RustDesk
       win_shell: |
         $password = '{{ rustdesk_password }}'
-        Start-Process "$env:ProgramFiles\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
+        # Comando para configurar a senha
+        Start-Process -FilePath "C:\Program Files\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
+      args:
+        executable: PowerShell
