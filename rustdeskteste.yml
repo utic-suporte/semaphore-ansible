@@ -7,6 +7,7 @@
   tasks:
     - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
       win_copy:
+        remote_src: yes
         src: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2.toml
         dest: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2_backup.toml
 
