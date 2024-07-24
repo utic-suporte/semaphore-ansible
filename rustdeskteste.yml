@@ -6,24 +6,21 @@
 
   tasks:
     - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
-      win_copy:
+      ansible.windows.win_copy:
         remote_src: yes
         src: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2.toml
         dest: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2_backup.toml
 
     - name: Criar novo arquivo de configuração do RustDesk para o usuário atual
-      win_template:
+      ansible.windows.win_template:
         src: rustdesk_config.j2
         dest: C:\Users\{{ ansible_user }}\AppData\Roaming\RustDesk\config\RustDesk2.toml
 
     - name: Reiniciar o serviço RustDesk
-      win_service:
+      ansible.windows.win_service:
         name: Rustdesk
         state: restarted
-        
-- name: Configurar a senha do RustDesk
-  ansible.windows.win_command:
-    command: |
-      powershell.exe -Command "$password = 'Sebrae@'; Start-Process -FilePath 'C:\Program Files\RustDesk\RustDesk.exe' -ArgumentList '--password $password' -Wait"
 
-
+    - name: Configurar a senha do RustDesk
+      ansible.windows.win_command:
+        command: powershell.exe -Command "$password = '{{ rustdesk_password }}'; Start-Process -FilePath 'C:\Program Files\RustDesk\RustDesk.exe' -ArgumentList '--password $password' -Wait"
