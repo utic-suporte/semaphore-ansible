@@ -23,8 +23,9 @@
         
 - name: Configurar a senha do RustDesk
   ansible.windows.win_shell:
-    cmd: |
+    command: |
       $password = 'Sebrae@'
       # Comando para configurar a senha
       Start-Process -FilePath "C:\Program Files\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
+
 
