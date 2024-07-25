@@ -7,8 +7,7 @@
   tasks:
     - name: Verificar a versão do PowerShell
       ansible.windows.win_shell:
-        cmd: |
-          $PSVersionTable.PSVersion
+        cmd: $PSVersionTable.PSVersion
 
     - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
       ansible.windows.win_copy:
