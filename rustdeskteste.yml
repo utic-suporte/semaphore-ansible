@@ -25,8 +25,7 @@
       ansible.windows.win_shell:
         cmd: |
           $password = "{{ rustdesk_password }}"
-          $arguments = "--password $password"
-          Start-Process -FilePath 'C:\Program Files\RustDesk\RustDesk.exe' -ArgumentList $arguments -Wait
+          Start-Process -FilePath "C:\\Program Files\\RustDesk\\RustDesk.exe" -ArgumentList "--password $password" -Wait
       args:
         executable: powershell
 
