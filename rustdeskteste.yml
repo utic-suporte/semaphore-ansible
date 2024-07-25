@@ -5,6 +5,11 @@
     rustdesk_password: 'Sebrae@'  # Insira a senha em texto claro aqui
 
   tasks:
+    - name: Verificar a versão do PowerShell
+      ansible.windows.win_shell:
+        cmd: |
+          $PSVersionTable.PSVersion
+
     - name: Criar um backup do arquivo de configuração do RustDesk para o usuário atual
       ansible.windows.win_copy:
         remote_src: yes
@@ -21,12 +26,8 @@
         name: Rustdesk
         state: restarted
 
-    - name: Copiar o script de configuração da senha do RustDesk
-      ansible.windows.win_copy:
-        src: configure_rustdesk_password.ps1
-        dest: C:\Windows\Temp\configure_rustdesk_password.ps1
-
     - name: Configurar a senha do RustDesk
       ansible.windows.win_shell:
         cmd: |
-          powershell.exe -File "C:\Windows\Temp\configure_rustdesk_password.ps1" -password '{{ rustdesk_password }}'
+          $password = '{{ rustdesk_password }}'
+          Start-Process -FilePath "C:\Program Files\RustDesk\RustDesk.exe" -ArgumentList "--password $password" -Wait
