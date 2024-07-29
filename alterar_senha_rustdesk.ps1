@@ -1,5 +1,5 @@
 # Caminho para o arquivo de configuração do RustDesk
-$configFilePath = "$env:ProgramFiles\RustDesk\config\RustDesk.toml"
+$configFilePath = "$env:C:\Users\Administrador\AppData\Roaming\RustDesk\config"
 
 # Nova senha que você quer definir
 $newPassword = "novaSenhaAqui"
