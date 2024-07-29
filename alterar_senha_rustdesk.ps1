@@ -13,7 +13,7 @@ if (Test-Path -Path $config_path) {
     if (Test-Path -Path $config_file) {
         # Alterar a senha no arquivo de configuração
         # Exemplo: substituindo a linha que contém a senha (adaptar conforme o formato real do arquivo de configuração)
-        (Get-Content $config_file) -replace 'senha_antiga', 'nova_senha' | Set-Content $config_file
+        (Get-Content $config_file) -replace '00vU35ke9AvERTkLsbZfJDcu/rKPqqHTg6', 'nova_senha' | Set-Content $config_file
         Write-Output "Senha alterada com sucesso."
     } else {
         Write-Output "Arquivo de configuração não encontrado: $config_file"
