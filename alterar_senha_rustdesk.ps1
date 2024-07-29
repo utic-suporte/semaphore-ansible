@@ -1,32 +1,23 @@
-# Caminho para o arquivo de configuração do RustDesk
-$configFilePath = "$env:APPDATA\RustDesk\config\RustDesk.toml"
+# Encontrar o usuário atualmente logado
+$current_user = (Get-WMIObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty UserName).Split('\')[1]
 
-# Nova senha que você quer definir
-$newPassword = "novaSenhaAqui"
+# Caminho do arquivo de configuração do RustDesk no perfil do usuário logado
+$config_path = "C:\Users\$current_user\AppData\Roaming\RustDesk\config"
 
-# Função para parar o serviço do RustDesk
-function Stop-RustDeskService {
-    Stop-Service -Name "RustDesk" -Force
-}
+# Certifique-se de que o diretório de configuração existe
+if (Test-Path -Path $config_path) {
+    # Caminho completo do arquivo de configuração (adaptar conforme o nome do arquivo real)
+    $config_file = "$config_path\Rustdesk.toml"
 
-# Função para iniciar o serviço do RustDesk
-function Start-RustDeskService {
-    Start-Service -Name "RustDesk"
-}
-
-# Função para alterar a senha no arquivo de configuração
-function Set-RustDeskPassword {
-    if (Test-Path -Path $configFilePath) {
-        $configContent = Get-Content -Path $configFilePath -Raw
-        $newConfigContent = $configContent -replace 'password = ".*"', "password = `"$newPassword`""
-        Set-Content -Path $configFilePath -Value $newConfigContent -Force
-        Write-Host "Senha alterada com sucesso."
+    # Certifique-se de que o arquivo de configuração existe
+    if (Test-Path -Path $config_file) {
+        # Alterar a senha no arquivo de configuração
+        # Exemplo: substituindo a linha que contém a senha (adaptar conforme o formato real do arquivo de configuração)
+        (Get-Content $config_file) -replace 'senha_antiga', 'nova_senha' | Set-Content $config_file
+        Write-Output "Senha alterada com sucesso."
     } else {
-        Write-Host "Arquivo de configuração não encontrado: $configFilePath"
+        Write-Output "Arquivo de configuração não encontrado: $config_file"
     }
+} else {
+    Write-Output "Diretório de configuração não encontrado: $config_path"
 }
-
-# Executar as funções
-Stop-RustDeskService
-Set-RustDeskPassword
-Start-RustDeskService
