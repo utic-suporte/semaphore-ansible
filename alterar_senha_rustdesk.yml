@@ -3,10 +3,9 @@
   hosts: windows
   tasks:
     - name: Copiar script PowerShell para o servidor
-      ansible.builtin.copy:
+      ansible.windows.win_copy:
         src: alterar_senha_rustdesk.ps1
         dest: C:\temp\alterar_senha_rustdesk.ps1
 
     - name: Executar script PowerShell para alterar a senha do RustDesk
-      ansible.windows.win_shell: |
-        PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File C:\temp\alterar_senha_rustdesk.ps1
+      ansible.windows.win_shell: PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File C:\temp\alterar_senha_rustdesk.ps1
