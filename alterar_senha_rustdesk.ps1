@@ -12,7 +12,7 @@ if (Test-Path -Path $config_path) {
     # Certifique-se de que o arquivo de configuração existe
     if (Test-Path -Path $config_file) {
         # Nova senha para substituir
-        $nova_senha = 'NovaSenhaAqui'
+        $nova_senha = '00vU35ke9AvERTkLsbZfJDcu/rKPqqHTg6'
 
         # Ler o conteúdo do arquivo de configuração
         $config_content = Get-Content $config_file
