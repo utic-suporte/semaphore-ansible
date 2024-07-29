@@ -16,9 +16,14 @@ function Start-RustDeskService {
 
 # Função para alterar a senha no arquivo de configuração
 function Set-RustDeskPassword {
-    $configContent = Get-Content -Path $configFilePath -Raw
-    $newConfigContent = $configContent -replace 'password = ".*"', "password = `"$newPassword`""
-    Set-Content -Path $configFilePath -Value $newConfigContent -Force
+    if (Test-Path -Path $configFilePath) {
+        $configContent = Get-Content -Path $configFilePath -Raw
+        $newConfigContent = $configContent -replace 'password = ".*"', "password = `"$newPassword`""
+        Set-Content -Path $configFilePath -Value $newConfigContent -Force
+        Write-Host "Senha alterada com sucesso."
+    } else {
+        Write-Host "Arquivo de configuração não encontrado: $configFilePath"
+    }
 }
 
 # Executar as funções
