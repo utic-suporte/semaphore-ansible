@@ -1,6 +1,0 @@
----
-- name: Test WinRM connection to Windows
-  hosts: windows
-  tasks:
-    - name: Run a command on Windows
-      win_command: hostname
