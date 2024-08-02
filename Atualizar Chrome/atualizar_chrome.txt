@@ -1,0 +1,44 @@
+---
+- name: Limpar cache e atualizar o Chrome
+  hosts: windows
+  tasks:
+    - name: Verificar se o Chrome está em execução
+      ansible.windows.win_shell: |
+        $chromeProcesses = Get-Process -Name chrome -ErrorAction SilentlyContinue
+        if ($chromeProcesses) {
+          Write-Output "Running"
+        } else {
+          Write-Output "NotRunning"
+        }
+      register: chrome_status
+
+    - name: Salvar abas do Chrome
+      ansible.windows.win_shell: |
+        $chromeSessionPath = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\Sessions"
+        if (Test-Path $chromeSessionPath) {
+          Copy-Item -Path "$chromeSessionPath\Current Session" -Destination "$chromeSessionPath\Current Session.bak" -Force
+          Copy-Item -Path "$chromeSessionPath\Current Tabs" -Destination "$chromeSessionPath\Current Tabs.bak" -Force
+        }
+      when: chrome_status.stdout == "Running"
+
+    - name: Fechar o Chrome
+      ansible.windows.win_shell: |
+        Stop-Process -Name chrome -Force
+      when: chrome_status.stdout == "Running"
+
+    - name: Limpar cache do Chrome
+      ansible.windows.win_shell: |
+        $chromeCachePath = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\Cache"
+        if (Test-Path $chromeCachePath) {
+          Remove-Item -Recurse -Force -Path $chromeCachePath\*
+        }
+
+    - name: Atualizar Google Chrome
+      ansible.windows.win_chocolatey:
+        name: googlechrome
+        state: latest
+
+    - name: Reabrir o Chrome e restaurar abas
+      ansible.windows.win_shell: |
+        Start-Process "chrome.exe" --restore-last-session
+      when: chrome_status.stdout == "Running"
