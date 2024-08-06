@@ -12,6 +12,10 @@
         }
       register: chrome_status
 
+    - name: Debug status do Chrome
+      debug:
+        var: chrome_status
+
     - name: Salvar abas do Chrome
       ansible.windows.win_shell: |
         $chromeSessionPath = "$env:LOCALAPPDATA\Google\Chrome\User Data\Default\Sessions"
@@ -33,10 +37,18 @@
           Remove-Item -Recurse -Force -Path $chromeCachePath\*
         }
 
+    - name: Debug antes da atualização
+      debug:
+        var: ansible_facts
+
     - name: Atualizar Google Chrome
       ansible.windows.win_chocolatey:
         name: googlechrome
         state: latest
+
+    - name: Debug depois da atualização
+      debug:
+        var: ansible_facts
 
     - name: Reabrir o Chrome e restaurar abas
       ansible.windows.win_shell: |
