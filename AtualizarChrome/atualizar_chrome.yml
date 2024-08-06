@@ -42,7 +42,7 @@
         var: ansible_facts
 
     - name: Atualizar Google Chrome
-      community.chocolatey.chocolatey:
+      chocolatey.chocolatey:
         name: googlechrome
         state: latest
 
